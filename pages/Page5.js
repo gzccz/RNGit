@@ -1,35 +1,31 @@
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View,Button} from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
 type Props = {};
 export default class Page5 extends Component<Props> {
+    static navigationOptions={
+        title:'ListView',
+        headerBackTitle:'6显示'   // 设置返回按钮文案，长度有限制
+    }
   render() {
-    return (
+      const {navigation} = this.props;
+
+      return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to Page5!</Text>
+          <Button
+              title={'go back'}
+              onPress={()=>{
+                  navigation.navigate('Page6');
+              }}
+          />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  }
+
 });
