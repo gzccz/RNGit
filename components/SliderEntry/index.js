@@ -15,7 +15,6 @@ export default class SliderEntry extends Component {
 
     get image () {
         const { data: { illustration }, parallax, parallaxProps, even } = this.props;
-        console.log(illustration)
         return parallax ? (
             <ParallaxImage
                 source={{ uri: illustration }}
@@ -39,7 +38,7 @@ export default class SliderEntry extends Component {
 
         const uppercaseTitle = title ? (
             <Text
-                style={[styles.title, even ? styles.titleEven : {}]}
+                style={[styles.title, even ? styles.titleEven : {},{fontSize:16}]}
                 numberOfLines={2}
             >
                 { title.toUpperCase() }

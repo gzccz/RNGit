@@ -19,6 +19,7 @@ import Page4 from '../pages/Page4'
 import Page5 from '../pages/Page5'
 import Page6 from '../pages/Page6'
 import Login from '../pages/Login'
+import Areas from '../pages/Areas'
 
 const DrawerNav = createDrawerNavigator({
         Page4: {
@@ -131,7 +132,7 @@ const AppBottomNavigator = createBottomTabNavigator({
         screen: Page1,
         navigationOptions: {
             showLabel: false,
-            tabBarLabel: '最热',
+            tabBarLabel: '首页',
             tabBarIcon: ({tintColor, focused}) => (
                 <Ionicons
                     name={'ios-home'}
@@ -151,7 +152,7 @@ const AppBottomNavigator = createBottomTabNavigator({
     Page2: {
         screen: Page2,
         navigationOptions: {
-            tabBarLabel: '趋势',
+            tabBarLabel: '最热',
             tabBarIcon: ({tintColor, focused}) => (
                 <Ionicons
                     name={'ios-people'}
@@ -257,6 +258,12 @@ const AppStackNavigator = createStackNavigator({
             //     // title: 'this is page5'
             // }
         },
+        Areas: {
+        screen: Areas,
+        // navigationOptions: {   // 在这里定义每个页面的导航数据   静态配置
+        //     // title: 'this is page5'
+        // }
+    },
         // Page3: {
         //     screen: Page3,
         //     navigationOptions: (props) => {    // 可修改title

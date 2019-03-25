@@ -1,18 +1,26 @@
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View,Button} from 'react-native';
 
-
-type Props = {};
-export default class Page6 extends Component<Props> {
+export default class Page6 extends Component {
     static navigationOptions={
         headerTitle:'ListView2',
         headerBackTitle:'1'   // 设置返回按钮文案，长度有限制
     }
   render() {
-    return (
+      const {navigation} = this.props;
+
+      return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to Page6!</Text>
+          <Button
+            onPress={()=>{
+                navigation.navigate('Areas',{city_id:1111})
+            }}
+            title={'test'}
+          >
+
+          </Button>
       </View>
     );
   }

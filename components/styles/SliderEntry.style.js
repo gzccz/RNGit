@@ -30,12 +30,13 @@ export default StyleSheet.create({
         top: 0,
         left: itemHorizontalMargin,
         right: itemHorizontalMargin,
-        bottom: 18,
+        bottom: 20,
         shadowColor: colors.black,
         shadowOpacity: 0.25,
-        shadowOffset: { width: 0, height: 10 },
+        shadowOffset: { width: 0, height: 18 },
         shadowRadius: 10,
-        borderRadius: entryBorderRadius
+        borderRadius: entryBorderRadius,
+        backgroundColor:'#d2d2d2'
     },
     imageContainer: {
         flex: 1,
