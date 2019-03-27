@@ -3,10 +3,12 @@
 // Reducer是纯函数，里面不应该有过多的逻辑
 import {combineReducers} from 'redux';
 import CityInfo from './cityInfoReduce';
+import Test from './testReduce';
 
 // 取决于这里加入了多少 reducer
 const RootReducer = combineReducers({
-    CityInfo
+    CityInfo,
+    Test
 });
 
 export default RootReducer;

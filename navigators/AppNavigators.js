@@ -12,20 +12,19 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator";
 import HomePage from '../pages/HomePage'
-import Page1 from '../pages/Page1'
-import Page2 from '../pages/Page2'
-import Page3 from '../pages/Page3'
-import Page4 from '../pages/Page4'
+import Home from '../pages/Home'
+import Hot from '../pages/Hot'
+import My from '../pages/My'
 import Page5 from '../pages/Page5'
-import Page6 from '../pages/Page6'
+import MovieDetail from '../pages/MovieDetail'
 import Login from '../pages/Login'
 import Areas from '../pages/Areas'
 
 const DrawerNav = createDrawerNavigator({
-        Page4: {
-            screen: Page4,
+        My: {
+            screen: My,
             navigationOptions: {
-                drawerLabel: 'Page4',
+                drawerLabel: 'My',
                 drawerIcon: ({tintColor}) => {
                     return <MaterialIcons
                         name={'drafts'}
@@ -49,7 +48,7 @@ const DrawerNav = createDrawerNavigator({
             }
         }
     }, {
-        initialRouteName: 'Page4',
+        initialRouteName: 'My',
         contentOptions: {
             activeOptions: {
                 activeTintColor: '#e91e63'
@@ -74,26 +73,20 @@ const DrawerNav = createDrawerNavigator({
 )
 
 const AppTopNavigator = createMaterialTopTabNavigator({
-        Page1: {
-            screen: Page1,
+        Home: {
+            screen: Home,
             navigationOptions: {
                 tabBarLabel: 'All'
             }
         },
-        Page2: {
-            screen: Page2,
+        Hot: {
+            screen: Hot,
             navigationOptions: {
                 tabBarLabel: 'IOS'
             }
         },
-        Page3: {
-            screen: Page3,
-            navigationOptions: {
-                tabBarLabel: 'React'
-            }
-        },
-        Page4: {
-            screen: Page4,
+        My: {
+            screen: My,
             navigationOptions: {
                 tabBarLabel: 'ReactNative'
             }
@@ -128,8 +121,8 @@ const AppTopNavigator = createMaterialTopTabNavigator({
 let homePageTitle;
 
 const AppBottomNavigator = createBottomTabNavigator({
-    Page1: {
-        screen: Page1,
+    Home: {
+        screen: Home,
         navigationOptions: {
             showLabel: false,
             tabBarLabel: '首页',
@@ -149,8 +142,8 @@ const AppBottomNavigator = createBottomTabNavigator({
 
         }
     },
-    Page2: {
-        screen: Page2,
+    Hot: {
+        screen: Hot,
         navigationOptions: {
             tabBarLabel: '最热',
             tabBarIcon: ({tintColor, focused}) => (
@@ -164,31 +157,31 @@ const AppBottomNavigator = createBottomTabNavigator({
                 // navigation.navigation.state.params = '趋势';
                 homePageTitle = '趋势';
                 // console.log(navigation.navigation.getParam.name)
-                navigation.navigation.navigate('Page2')
+                navigation.navigation.navigate('Hot')
             }
         },
     },
-    Page3: {
-        screen: Page3,
-        navigationOptions: {
-            tabBarLabel: '收藏',
-            tabBarIcon: ({tintColor, focused}) => (
-                <Ionicons
-                    name={'ios-chatboxes'}
-                    size={26}
-                    style={{color: tintColor}}
-                />
-            ),
-            tabBarOnPress: (navigation) => { // 使用tabBarOnPress点击事件
-                // navigation.navigation.state.params = '收藏';
-                homePageTitle = '收藏';
-                // console.log(navigation.navigation.getParam.name)
-                navigation.navigation.navigate('Page3')
-            },
-        }
-    },
-    Page4: {
-        screen: Page4,
+    // Page3: {
+    //     screen: Page3,
+    //     navigationOptions: {
+    //         tabBarLabel: '收藏',
+    //         tabBarIcon: ({tintColor, focused}) => (
+    //             <Ionicons
+    //                 name={'ios-chatboxes'}
+    //                 size={26}
+    //                 style={{color: tintColor}}
+    //             />
+    //         ),
+    //         tabBarOnPress: (navigation) => { // 使用tabBarOnPress点击事件
+    //             // navigation.navigation.state.params = '收藏';
+    //             homePageTitle = '收藏';
+    //             // console.log(navigation.navigation.getParam.name)
+    //             navigation.navigation.navigate('Page3')
+    //         },
+    //     }
+    // },
+    My: {
+        screen: My,
         navigationOptions: {
             tabBarLabel: '我的',
             tabBarIcon: ({tintColor, focused}) => (
@@ -202,7 +195,7 @@ const AppBottomNavigator = createBottomTabNavigator({
                 // navigation.navigation.state.params = '我的';
                 homePageTitle = '我的';
                 // console.log(navigation.navigation.getParam.name)
-                navigation.navigation.navigate('Page4')
+                navigation.navigation.navigate('My')
             }
         }
     },
@@ -240,8 +233,8 @@ const AppStackNavigator = createStackNavigator({
                 header:null
             }
         },
-        // Page2: {
-        //     screen: Page2,
+        // Hot: {
+        //     screen: Hot,
         //     navigationOptions: ({navigation}) => ({
         //         title: `页面名`     // 动态配置
         //     }),
@@ -252,8 +245,8 @@ const AppStackNavigator = createStackNavigator({
             //     // title: 'this is page5'
             // }
         },
-        Page6: {
-            screen: Page6,
+        MovieDetail: {
+            screen: MovieDetail,
             // navigationOptions: {   // 在这里定义每个页面的导航数据   静态配置
             //     // title: 'this is page5'
             // }
@@ -264,32 +257,7 @@ const AppStackNavigator = createStackNavigator({
         //     // title: 'this is page5'
         // }
     },
-        // Page3: {
-        //     screen: Page3,
-        //     navigationOptions: (props) => {    // 可修改title
-        //         const {navigation} = props;
-        //         const {state, setParams} = navigation;
-        //         const {params} = state;
-        //         return {
-        //             title: params.title ? params.title : 'this is page3',
-        //             headerRight: (
-        //                 <Button
-        //                     title={params.mode === 'edit' ? '保存' : '编辑'}
-        //                     onPress={() => setParams({mode: params.mode === 'edit' ? '' : 'edit'})}
-        //                 />
-        //             )
-        //         }
-        //     }
-        // },
-        // Page4: {
-        //     screen: Page4,
-        //     // navigationOptions:{
-        //     //     title:'this is page4'
-        //     // },
-        //     navigationOptions: ({navigation}) => ({
-        //         title: `${navigation.state.params.name}`     // 动态配置
-        //     }),
-        // },
+
         Bottom: {
             screen: AppBottomNavigator,
             navigationOptions: {
@@ -329,10 +297,10 @@ const AppStack = createStackNavigator({
     // Page1: {
     //     screen: Page1
     // },
-    // Page2: {
-    //     screen: Page2,
+    // Hot: {
+    //     screen: Hot,
     //     navigationOptions: {   // 在这里定义每个页面的导航数据   静态配置
-    //         title: 'this is page2'
+    //         title: 'this is Hot'
     //     }
     // },
     initialRouteName: 'Home'

@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import React, {Component} from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
-import { ParallaxImage } from 'react-native-snap-carousel';
+import {ParallaxImage} from 'react-native-snap-carousel';
 import styles from '../styles/SliderEntry.style';
+import MovieDetail from "../../pages/MovieDetail";
 
 export default class SliderEntry extends Component {
 
@@ -13,11 +14,11 @@ export default class SliderEntry extends Component {
         parallaxProps: PropTypes.object
     };
 
-    get image () {
-        const { data: { illustration }, parallax, parallaxProps, even } = this.props;
+    get image() {
+        const {data: {illustration}, parallax, parallaxProps, even} = this.props;
         return parallax ? (
             <ParallaxImage
-                source={{ uri: illustration }}
+                source={{uri: illustration}}
                 containerStyle={[styles.imageContainer, even ? styles.imageContainerEven : {}]}
                 style={styles.image}
                 parallaxFactor={0.35}
@@ -27,21 +28,21 @@ export default class SliderEntry extends Component {
             />
         ) : (
             <Image
-                source={{ uri: illustration }}
+                source={{uri: illustration}}
                 style={styles.image}
             />
         );
     }
 
-    render () {
-        const { data: { title, subtitle }, even } = this.props;
-
+    render() {
+        const {data: {title, subtitle, movie_id}, even} = this.props;
+        const {navigation:navigation} = this.props;
         const uppercaseTitle = title ? (
             <Text
-                style={[styles.title, even ? styles.titleEven : {},{fontSize:16}]}
+                style={[styles.title, even ? styles.titleEven : {}, {fontSize: 16}]}
                 numberOfLines={2}
             >
-                { title.toUpperCase() }
+                {title.toUpperCase()}
             </Text>
         ) : false;
 
@@ -49,20 +50,27 @@ export default class SliderEntry extends Component {
             <TouchableOpacity
                 activeOpacity={1}
                 style={styles.slideInnerContainer}
-                onPress={() => { alert(`You've clicked '${title}'`); }}
+                onPress={() => {
+                    navigation.navigate('MovieDetail', {
+                        movie_id:movie_id,
+                        callback: (backdata) => {
+                        }
+                    });
+                }}
+
             >
-                <View style={styles.shadow} />
+                <View style={styles.shadow}/>
                 <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
-                    { this.image }
-                    <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
+                    {this.image}
+                    <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]}/>
                 </View>
                 <View style={[styles.textContainer, even ? styles.textContainerEven : {}]}>
-                    { uppercaseTitle }
+                    {uppercaseTitle}
                     <Text
                         style={[styles.subtitle, even ? styles.subtitleEven : {}]}
                         numberOfLines={2}
                     >
-                        { subtitle }
+                        {subtitle}
                     </Text>
                 </View>
             </TouchableOpacity>

@@ -3,7 +3,7 @@ import {SectionList, Text, View, StyleSheet, Platform, StatusBar, PixelRatio, Di
 import CitySectionList from './CitySectionList'
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 import {connect} from "react-redux";
-import {cityInfoAction} from "../redux/actions/cityInfoAction";
+import {cityInfoAction,test} from "../redux/actions/cityInfoAction";
 
 const ITEM_HEIGHT = 50; //item的高度
 const HEADER_HEIGHT = 24;  //分组头部的高度
@@ -95,7 +95,10 @@ class Areas extends Component {
         this.props.navigation.goBack();
         // this.props.navigation.state.params.callback('返回的数据');
         let { dispatch } = this.props;
+        console.log(dispatch)
+        console.log(3333333333333+'city_id'+'city_name')
         dispatch(cityInfoAction({city_id,city_name}))
+        dispatch(test('这是测试'))
     }
 
     _renderItem = (item) => {
@@ -171,7 +174,9 @@ class Areas extends Component {
 
 
 function getCityInfo(state) {
-    return cityInfo = state.CityInfo;
+    console.log(748239748239)
+    console.log(state)
+    return cityInfo = state;
 }
 
 

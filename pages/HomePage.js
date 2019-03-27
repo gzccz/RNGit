@@ -22,27 +22,21 @@ export default class HomePage extends Component<Props> {
             <View style={styles.container}>
                 <Text style={styles.welcome}>Welcome to React Pages11111!</Text>
                 <Button
-                    title={'go page1'}
+                    title={'go Home'}
                     onPress={()=>{
-                        navigation.navigate('Page1',{name:'动态的'})
+                        navigation.navigate('Home',{name:'动态的'})
                     }}
                 />
                 <Button
-                    title={'go page2'}
+                    title={'go Hot'}
                     onPress={()=>{
-                        navigation.navigate('Page2')
+                        navigation.navigate('Hot')
                     }}
                 />
                 <Button
-                    title={'go page3'}
+                    title={'go My'}
                     onPress={()=>{
-                        navigation.navigate('Page3',{name:'Devio'})
-                    }}
-                />
-                <Button
-                    title={'go page4'}
-                    onPress={()=>{
-                        navigation.navigate('Page4',{name:'page4 设置'})
+                        navigation.navigate('My',{name:'My 设置'})
                     }}
                 />
                 <Button

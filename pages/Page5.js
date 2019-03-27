@@ -2,9 +2,7 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View,Button} from 'react-native';
 
-
-type Props = {};
-export default class Page5 extends Component<Props> {
+export default class Page5 extends Component {
     static navigationOptions={
         title:'ListView',
         headerBackTitle:'6显示'   // 设置返回按钮文案，长度有限制

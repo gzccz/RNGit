@@ -34,6 +34,7 @@ import MovieLists from '../components/MovieLists'
 import axios from '../axios/index';
 import Utils from "../utils";
 import {connect} from "react-redux";
+import MovieDetail from "./MovieDetail";
 
 
 let {width} = Dimensions.get('window');
@@ -43,18 +44,17 @@ const SLIDER_1_FIRST_ITEM = 1;
 const defaultItrem = {
     title: "",
     subtitle: "",
-    illustration: "http://img5.mtime.cn/mt/2017/01/27/114649.37790398_1280X720X1.jpg",
+    illustration: "",
 };
 
-class Page1 extends Component {
+class Home extends Component {
 
     constructor(props) {
         super(props);
-        console.log(this.props);
         this.state = {
             city_info: {
-                city_id: this.props.cityInfo.city_id,
-                city_name: this.props.cityInfo.city_name
+                city_id: this.props.CityInfo.cityInfo.city_id,
+                city_name: this.props.CityInfo.cityInfo.city_name
             },
             getEnd: false,
             swiperItems: [defaultItrem, defaultItrem, defaultItrem, defaultItrem], // 轮播站位
@@ -65,46 +65,7 @@ class Page1 extends Component {
             showLoading: true,
             movieComingNewLists: {},
             showMovieLists: false,
-            taskList2: [{
-                title: "西游伏妖篇",
-                subtitle: "奇幻",
-                illustration: "http://img5.mtime.cn/mt/2017/01/27/114649.37790398_1280X720X2.jpg",
-                ratingFinal: "6.7",
-                commonSpecial: '唐僧\"重色轻友\"与悟空反目',
-                actorName1: '吴亦凡',
-                actorName2: '林更新'
-            },
-                {
-                    title: "西游伏妖篇",
-                    subtitle: "奇幻",
-                    illustration: "http://img5.mtime.cn/mt/2017/01/27/114649.37790398_1280X720X2.jpg",
-                    ratingFinal: "6.7",
-                    commonSpecial: '唐僧\"重色轻友\"与悟空反目',
-                    actorName1: '吴亦凡',
-                    actorName2: '林更新'
-                },
-                {
-                    title: "西游伏妖篇",
-                    subtitle: "奇幻",
-                    illustration: "http://img5.mtime.cn/mt/2017/01/27/114649.37790398_1280X720X2.jpg",
-                    ratingFinal: "6.7",
-                    commonSpecial: '唐僧\"重色轻友\"与悟空反目',
-                    actorName1: '吴亦凡',
-                    actorName2: '林更新'
-                },
-                {
-                    title: "西游伏妖篇",
-                    subtitle: "奇幻",
-                    illustration: "http://img5.mtime.cn/mt/2017/01/27/114649.37790398_1280X720X2.jpg",
-                    ratingFinal: "6.7",
-                    commonSpecial: '唐僧\"重色轻友\"与悟空反目',
-                    actorName1: '吴亦凡',
-                    actorName2: '林更新'
-                }
-            ]
         };
-
-
     }
 
     static navigationOptions = {
@@ -113,17 +74,29 @@ class Page1 extends Component {
     }
 
     componentWillMount() {
+      this._getLocationMovies();
+        this._getMovieComingNew();
+    }
+
+    componentDidMount() {
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps)
+        if(nextProps.CityInfo.cityInfo.city_id!=this.state.city_info.city_id){
+            this._getMovieComingNew();
+            this._getLocationMovies();
+        }
+
+
+    }
+    _getLocationMovies=()=>{
         let swiperMoviesLists = []; // 轮播数据
         let scrollMoviesLists = []; // 水平滑动列表数据
 
-        axios.get('https://api-m.mtime.cn/Showtime/LocationMovies.api?locationId=974')
+        axios.get(`https://api-m.mtime.cn/Showtime/LocationMovies.api?locationId=${this.state.city_info.city_id}`)
             .then((response) => {
-
-                // console.log(response.data.movies)
-                // response.data.ms.map((item,index)=>{
-                //
-                // })
-
                 let swiperListsData = response.data.ms.filter((item, index) => {
                     return index < 5;
                 });
@@ -134,14 +107,16 @@ class Page1 extends Component {
                     swiperMoviesLists.push({
                         title: item.t,
                         subtitle: item.movieType,
-                        illustration: item.img.replace(/2.jpg/, '1.jpg')
+                        illustration: item.img.replace(/2.jpg/, '1.jpg'),
+                        movie_id:item.id
                     })
                 });
                 scrollListData.map((item, index) => {
                     scrollMoviesLists.push({
                         t: item.t,
                         img: item.img.replace(/2.jpg/, '1.jpg'),
-                        r: item.r > 0 ? item.r : '预售'
+                        r: item.r > 0 ? item.r : '预售',
+                        movie_id:item.id
                     })
                 });
                 this.setState({
@@ -151,22 +126,10 @@ class Page1 extends Component {
                 })
             });
     }
-
-    componentDidMount() {
-        console.log(this.props)
-        this._getMovieComingNew()
-
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log("---------")
-        console.log(nextProps)
-        console.log(this.state.city_info.city_id)
-    }
-
     _renderItemWithParallax({item, index}, parallaxProps) {
         return (
             <SliderEntry
+                navigation={this.props.navigation}
                 data={item}
                 even={(index + 1) % 2 === 0}
                 parallax={true}
@@ -177,7 +140,6 @@ class Page1 extends Component {
 
     mainExample(number, title) {
         const {slider1ActiveSlide} = this.state;
-
         return (
             <View style={styles.exampleContainer}>
                 <Text ref={ref => this.headerTitle = ref} style={styles.title}>最热电影</Text>
@@ -185,7 +147,7 @@ class Page1 extends Component {
                 <Carousel
                     ref={c => this._slider1Ref = c}
                     data={this.state.swiperItems}
-                    renderItem={this._renderItemWithParallax}
+                    renderItem={this._renderItemWithParallax.bind(this)}
                     sliderWidth={sliderWidth}
                     itemWidth={itemWidth}
                     hasParallaxImages={true}
@@ -207,9 +169,17 @@ class Page1 extends Component {
     }
 
     _horizontalScrollItem(data) {
+        const {navigation} = this.props;
         return (data.map((item, index) => {
                 return (
                     <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('MovieDetail', {
+                                movie_id: item.movie_id,
+                                callback: (backdata) => {
+                                }
+                            });
+                        }}
                         key={index}
                         style={{margin: 10, justifyContent: 'center'}}
                     >
@@ -217,7 +187,7 @@ class Page1 extends Component {
                             style={{width: 100, height: 142,}}
                             source={{uri: item.img}}
                         />
-                        <View style={stylesPage1.tag}><Text style={{color: '#fff'}}>{item.r}</Text></View>
+                        <View style={stylesHome.tag}><Text style={{color: '#fff'}}>{item.r}</Text></View>
                         <Text numberOfLines={1}
                               style={{textAlign: 'center', paddingVertical: 10, width: 100}}>{item.t}</Text>
                     </TouchableOpacity>
@@ -270,7 +240,7 @@ class Page1 extends Component {
 
     _getMovieComingNew = () => {
         let arr = [];
-        axios.get('https://api-m.mtime.cn/Movie/MovieComingNew.api?locationId=974')
+        axios.get(`https://api-m.mtime.cn/Movie/MovieComingNew.api?locationId=${this.state.city_info.city_id}`)
             .then((response) => {
                 response.data.attention.map((item, index) => {
                     arr.push({
@@ -278,15 +248,16 @@ class Page1 extends Component {
                         type: item.type,
                         image: item.image.replace(/2.jpg/, '1.jpg'),
                         actor1: item.actor1,
-                        actor2: item.actor2
+                        actor2: item.actor2,
+                        movie_id:item.id
                     })
                 });
 
                 this.setState({
                     movieComingNewLists: {
                         data: arr,
-                        isAttention: true,
                     },
+                    movieComingNewLength:response.data.moviecomings.length,
                     showLoading: false,
                     showMovieLists: true
                 })
@@ -301,11 +272,11 @@ class Page1 extends Component {
         const horizontalScrollItem = this._horizontalScrollItem(this.state.horizontalScrollItem);
 
         return (
-            <View style={stylesPage1.container}>
+            <View style={stylesHome.container}>
                 <StatusBar translucent={true} barStyle="light-content"/>
                 <View
                     ref={ref => this.navBar = ref}
-                    style={stylesPage1.navBar}
+                    style={stylesHome.navBar}
                 ><Text style={{color: '#fff', fontSize: 20}}>最热电影</Text></View>
 
                 <ScrollView
@@ -323,10 +294,9 @@ class Page1 extends Component {
                         flex: 1,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        paddingTop: 10,
                         backgroundColor: '#fff'
                     }}>
-                        <View style={stylesPage1.scrollHeader}>
+                        <View style={stylesHome.scrollHeader}>
                             <View
                                 style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}}
                             >
@@ -337,7 +307,6 @@ class Page1 extends Component {
                                             city_id: this.state.city_info.city_id,
                                             city_name: this.state.city_info.city_name,
                                             callback: (backdata) => {
-                                                console.log(backdata);
                                                 this.setState({
                                                     city_info: {
                                                         city_id: backdata.city_id,
@@ -363,7 +332,13 @@ class Page1 extends Component {
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity
-                                style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}}>
+                                onPress={() => {
+                                    navigation.navigate('Hot', {
+                                        tabIndex: 0,
+                                    });
+                                }}
+                                style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}}
+                            >
                                 <Text>{this.state.locationMoviesLength}部 </Text>
                                 <Ionicons
                                     name={'ios-arrow-forward'}
@@ -388,15 +363,21 @@ class Page1 extends Component {
                         marginTop: 10,
                         marginBottom: 40
                     }}>
-                        <View style={stylesPage1.scrollHeader}>
+                        <View style={stylesHome.scrollHeader}>
                             <View
                                 style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}}
                             >
                                 <Text style={{fontSize: 18}}>即将上映∙</Text>
                             </View>
                             <TouchableOpacity
-                                style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}}>
-                                <Text>26部 </Text>
+                                onPress={() => {
+                                    navigation.navigate('Hot', {
+                                        tabIndex: 1,
+                                    });
+                                }}
+                                style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}}
+                            >
+                                <Text>{this.state.movieComingNewLength}部 </Text>
                                 <Ionicons
                                     name={'ios-arrow-forward'}
                                     size={20}
@@ -407,6 +388,7 @@ class Page1 extends Component {
                         <View>
                             {
                                 this.state.showMovieLists ? <MovieLists
+                                    navigation={this.props.navigation}
                                     getListsData={this.state.movieComingNewLists}
                                 /> : <View style={{
                                     height: 20,
@@ -423,47 +405,6 @@ class Page1 extends Component {
 
 
                     </View>
-
-
-                    {/*<Button*/}
-                    {/*title={'go back'}*/}
-                    {/*onPress={() => {*/}
-                    {/*navigation.goBack();*/}
-                    {/*}}*/}
-                    {/*/>*/}
-
-                    {/*<Button*/}
-                    {/*title={'跳转到页面2'}*/}
-                    {/*onPress={() => {*/}
-                    {/*navigation.navigate('Page2');*/}
-                    {/*}}*/}
-                    {/*/>*/}
-                    {/*<Button*/}
-                    {/*title={'跳转到页面5'}*/}
-                    {/*onPress={() => {*/}
-                    {/*navigation.navigate('Page5');*/}
-                    {/*}}*/}
-                    {/*/>*/}
-                    {/*<Button*/}
-                    {/*title={'go BottomNavigator'}*/}
-                    {/*onPress={() => {*/}
-                    {/*navigation.navigate('Bottom')*/}
-                    {/*}}*/}
-                    {/*/>*/}
-                    {/*<Button*/}
-                    {/*title={'go TopNavigator'}*/}
-                    {/*onPress={() => {*/}
-                    {/*navigation.navigate('Top')*/}
-                    {/*}}*/}
-                    {/*/>*/}
-                    {/*<Button*/}
-                    {/*title={'go DrawerNav'}*/}
-                    {/*onPress={() => {*/}
-                    {/*navigation.navigate('DrawerNav')*/}
-                    {/*}}*/}
-                    {/*/>*/}
-
-
                 </ScrollView>
 
 
@@ -475,14 +416,14 @@ class Page1 extends Component {
 
 
 function getCityInfo(state) {
-    return cityInfo = state.CityInfo;
+    return info = state;
 }
 
 
-export default connect(getCityInfo)(Page1)
+export default connect(getCityInfo)(Home)
 
 
-const stylesPage1 = StyleSheet.create({
+const stylesHome = StyleSheet.create({
     welcome: {
         fontSize: 20,
         textAlign: 'center',
@@ -531,6 +472,6 @@ const stylesPage1 = StyleSheet.create({
         borderBottomWidth: 1,
         borderStyle: 'solid',
         borderColor: '#ededed',
-        paddingBottom: 10
+        paddingVertical:10
     }
 });

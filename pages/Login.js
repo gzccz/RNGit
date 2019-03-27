@@ -22,9 +22,9 @@ export default class Login extends Component<Props> {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>Welcome to React Login!</Text>
+                <Text style={styles.welcome}>Welcome to React Native!</Text>
                 <Button
-                    title={'Login'}
+                    title={'进入'}
                     onPress={()=>{
                         navigation.navigate('App')
                     }}
