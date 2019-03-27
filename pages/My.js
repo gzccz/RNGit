@@ -8,18 +8,26 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View,Button} from 'react-native';
+import {Platform, StyleSheet, Text, View,Button,Image} from 'react-native';
 
 export default class My extends Component {
-    static navigationOptions={
-        title:'Home',
-        headerBackTitle:'返回4'   // 设置返回按钮文案，长度有限制
-    }
     render() {
         const {navigation} = this.props;
         return (
             <View style={styles.container}>
+                <Text>
+                    作者：狗子村村长
+                </Text>
+                <Text>
+                    邮箱：357846077@qq.com
+                </Text>
 
+                <Text style={{marginTop:50}}>小程序作品</Text>
+
+               <Image
+                   style={{marginTop:20}}
+                   source={require('../asset/images/common/WechatXcx.jpg')}
+               />
             </View>
         );
     }
